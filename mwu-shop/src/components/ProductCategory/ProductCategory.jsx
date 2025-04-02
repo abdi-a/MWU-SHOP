@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import './productcategory.css';
+import CloseIcon from '@mui/icons-material/Close';
 
 const ProductCategory = () => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [loadingProduct, setLoadingProduct] = useState(false);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -16,7 +16,6 @@ const ProductCategory = () => {
                 const response = await axios.get('https://dummyjson.com/products?limit=100&skip=0');
                 const allProducts = response.data.products;
 
-                // Categorize products by their category field
                 const categorizedProducts = allProducts.reduce((acc, product) => {
                     if (!acc[product.category]) {
                         acc[product.category] = [];
@@ -29,100 +28,108 @@ const ProductCategory = () => {
                 setProducts(categorizedProducts);
             } catch (error) {
                 console.error('Error fetching products:', error);
-            } finally {
-                setLoading(false);
             }
         };
 
         fetchProducts();
     }, []);
 
-    const handleProductClick = (productId) => {
-        navigate(`/product/${productId}`);
+    const handleProductClick = async (product) => {
+        setLoadingProduct(true);
+        try {
+            const response = await axios.get(`https://dummyjson.com/products/${product.id}`);
+            setSelectedProduct(response.data);
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        } finally {
+            setLoadingProduct(false);
+        }
     };
 
-    if (loading) {
-        return (
-            <div className="product-category">
-                <div className="loading">Loading categories...</div>
-            </div>
-        );
-    }
+    const closeModal = (e) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        setSelectedProduct(null);
+    };
+
+    const handleModalClick = (e) => {
+        e.stopPropagation();
+    };
 
     return (
         <div className="product-category">
-            {/* <h2>Browse Categories</h2> */}
+            <h2>Buy</h2>
             <div className="category-list">
-                <button 
-                    className={selectedCategory === '' ? 'active' : ''} 
-                    onClick={() => setSelectedCategory('')}
-                >
-                    All Categories
-                </button>
                 {categories.map((category) => (
-                    <button 
-                        key={category} 
-                        onClick={() => setSelectedCategory(category)}
-                        className={selectedCategory === category ? 'active' : ''}
-                    >
+                    <button key={category} onClick={() => setSelectedCategory(category)}>
                         {category}
                     </button>
                 ))}
             </div>
-
-            <h3>
-                {selectedCategory 
-                    ? `Products in ${selectedCategory}` 
-                    : 'All Products'}
-            </h3>
-
+            <h3>Products {selectedCategory}</h3>
             <div className="product-list">
-                {selectedCategory
+                {selectedCategory && products[selectedCategory]
                     ? products[selectedCategory].map((product) => (
-                        <div 
-                            key={product.id} 
-                            className="product-item"
-                            onClick={() => handleProductClick(product.id)}
-                        >
-                            <div className="product-image">
-                                <img src={product.thumbnail} alt={product.title} />
-                                <div className="discount-badge">
-                                    -{Math.round(product.discountPercentage)}%
-                                </div>
-                            </div>
-                            <h4>{product.title}</h4>
-                            <p className="product-description">{product.description}</p>
-                            <div className="product-meta">
-                                <p className="product-price">${product.price}</p>
-                                <div className="product-rating">
-                                    <span>⭐ {product.rating}</span>
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                    : Object.values(products).flat().map((product) => (
-                        <div 
-                            key={product.id} 
-                            className="product-item"
-                            onClick={() => handleProductClick(product.id)}
-                        >
-                            <div className="product-image">
-                                <img src={product.thumbnail} alt={product.title} />
-                                <div className="discount-badge">
-                                    -{Math.round(product.discountPercentage)}%
-                                </div>
-                            </div>
-                            <h4>{product.title}</h4>
-                            <p className="product-description">{product.description}</p>
-                            <div className="product-meta">
-                                <p className="product-price">${product.price}</p>
-                                <div className="product-rating">
-                                    <span>⭐ {product.rating}</span>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                          <div
+                              key={product.id}
+                              className="product-item"
+                              onClick={() => handleProductClick(product)}
+                          >
+                              <img src={product.thumbnail} alt={product.title} />
+                              <h4>{product.title}</h4>
+                              <p>Price: ${product.price}</p>
+                          </div>
+                      ))
+                    : <p>Please select what you want to buy</p>}
             </div>
+
+         
+            {selectedProduct && (
+                <div className="product-modal-overlay" onClick={closeModal}>
+                    <div className="product-modal" onClick={handleModalClick}>
+                        <button className="close-button" onClick={closeModal}>
+                            <CloseIcon />
+                        </button>
+                        {loadingProduct ? (
+                            <div className="loading">Loading product details...</div>
+                        ) : (
+                            <div className="product-modal-content">
+                                <div className="product-images">
+                                    <img 
+                                        src={selectedProduct.thumbnail} 
+                                        alt={selectedProduct.title} 
+                                        className="main-image"
+                                    />
+                                    <div className="product-gallery">
+                                        {selectedProduct.images.map((image, index) => (
+                                            <img 
+                                                key={index} 
+                                                src={image} 
+                                                alt={`${selectedProduct.title} ${index + 1}`}
+                                                className="gallery-image"
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="product-details">
+                                    <h2>{selectedProduct.title}</h2>
+                                    <p className="product-brand">Brand: {selectedProduct.brand}</p>
+                                    <p className="product-category">Category: {selectedProduct.category}</p>
+                                    <p className="product-description">{selectedProduct.description}</p>
+                                    <div className="product-meta">
+                                        <p className="product-price">Price: ${selectedProduct.price}</p>
+                                        <p className="product-rating">Rating: {selectedProduct.rating}⭐</p>
+                                        <p className="product-stock">Stock: {selectedProduct.stock} units</p>
+                                        <p className="product-discount">Discount: {selectedProduct.discountPercentage}% off</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -1,0 +1,68 @@
+.login-page {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: #fff;
+}
+
+.login-page h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-page input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.login-page button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff6a5e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-page button:hover {
+    background-color: #ff4a3d;
+}
+
+.login-page .google-signin {
+    margin-top: 15px;
+    background-color: #4285f4;
+}
+
+.login-page .google-signin:hover {
+    background-color: #357abd;
+}
+
+.login-page .error {
+    color: red;
+    margin-top: 10px;
+}
+
+.login-page p {
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+.login-page p a {
+    color: #ff6a5e;
+    text-decoration: none;
+}
+
+.login-page p a:hover {
+    text-decoration: underline;
+}

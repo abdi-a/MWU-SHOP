@@ -1,86 +1,40 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import './footer.css';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import SendIcon from '@mui/icons-material/Send';
 
 const Footer = () => {
-    const [email, setEmail] = useState('');
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // TODO: Implement newsletter subscription
-        console.log('Newsletter subscription for:', email);
-        setEmail('');
-    };
-
     return (
         <footer className="footer">
-            <div className="footer-content">
+            <div className="footer-container">
                 <div className="footer-section">
-                    <h3>About MWU SHOP</h3>
-                    <p>Your one-stop destination for all your shopping needs. We provide quality products at competitive prices with excellent customer service.</p>
-                    <div className="social-links">
-                        <a href="#" className="social-link">
-                            <FacebookIcon />
-                        </a>
-                        <a href="#" className="social-link">
-                            <TwitterIcon />
-                        </a>
-                        <a href="#" className="social-link">
-                            <InstagramIcon />
-                        </a>
-                        <a href="#" className="social-link">
-                            <LinkedInIcon />
-                        </a>
-                    </div>
+                    <h3>About Us</h3>
+                    <p>mwu shop is your one-stop destination for all your shopping needs. We offer a wide range of products at the best prices.</p>
                 </div>
-
                 <div className="footer-section">
                     <h3>Quick Links</h3>
-                    <ul className="footer-links">
-                      
-                      
-                        <li><Link to="/categories">Categories</Link></li>
-                        <li><Link to="/about">About Us</Link></li>
-                        <li><Link to="/contact">Contact</Link></li>
+                    <ul>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
                     </ul>
                 </div>
-
                 <div className="footer-section">
-                    <h3>Contact Info</h3>
-                    <ul className="contact-info">
-                        <li>
-                            <LocationOnIcon />
-                            <span>dorm Street, block 13 </span>
-                        </li>
-                        <li>
-                            <PhoneIcon />
-                            <span>+2538890645</span>
-                        </li>
-                        <li>
-                            <EmailIcon />
-                            <span>contact@mwushop.com</span>
-                        </li>
-                    </ul>
+                    <h3>Contact Us</h3>
+                    <p>Email: mwu@123.com</p>
+                    <p>Phone: +251938890645</p>
+                    <p>Address: Robe City</p>
                 </div>
-
-        
+                <div className="footer-section">
+                    <h3>Follow Us</h3>
+                    <div className="social-icons">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    </div>
+                </div>
             </div>
-            
             <div className="footer-bottom">
-                <p>&copy; {new Date().getFullYear()} MWU SHOP. All rights reserved.</p>
-                <div className="footer-bottom-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Cookie Policy</a>
-                </div>
+                <p>&copy; 2025 mwu shop. All rights reserved.</p>
             </div>
         </footer>
     );
