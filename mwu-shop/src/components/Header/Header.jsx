@@ -53,6 +53,7 @@ const Header = () => {
                             <button type="submit" className="search-button">
                                 <SearchIcon />
                             </button>
+                            
                         </div>
                     </form>
                     
