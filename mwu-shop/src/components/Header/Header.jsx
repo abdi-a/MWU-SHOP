@@ -172,10 +172,10 @@ const Header = ({ user }) => {
         <nav className="nav-links">
           {user ? (
             <div className="user-info">
-              <span>Welcome, {user.displayName || user.email}</span>
+              <span>{user.displayName || user.email}</span>
             </div>
           ) : (
-            <Link to="/login" className="nav-link">Sign In</Link>
+            <Link to="/login" className="nav-link">SignUp</Link>
           )}
         </nav>
       </div>

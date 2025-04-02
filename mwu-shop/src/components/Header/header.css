@@ -286,6 +286,7 @@
 .logo img {
     width: 50px;
     height: auto;
+    margin-right: -16px;
 }
 
 .logo h1 {
