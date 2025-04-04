@@ -6,8 +6,6 @@ const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [bannerImages, setBannerImages] = useState([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [loadingProduct, setLoadingProduct] = useState(false);
 
@@ -20,12 +18,6 @@ const ProductList = () => {
                 }
                 const data = await response.json();
                 setProducts(data.products);
-
-                const randomImages = data.products
-                    .map(product => product.thumbnail)
-                    .sort(() => 0.5 - Math.random())
-                    .slice(0, 3);
-                setBannerImages(randomImages);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -35,14 +27,6 @@ const ProductList = () => {
 
         fetchProducts();
     }, []);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
-        }, 3000);
-
-        return () => clearInterval(interval);
-    }, [bannerImages]);
 
     const handleProductClick = async (productId) => {
         setLoadingProduct(true);
@@ -82,22 +66,6 @@ const ProductList = () => {
 
     return (
         <div>
-            <div className="banner">
-                <div
-                    className="banner-images-container"
-                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-                >
-                    {bannerImages.map((image, index) => (
-                        <img
-                            key={index}
-                            src={image}
-                            alt={`Banner ${index + 1}`}
-                            className="banner-image"
-                        />
-                    ))}
-                </div>
-            </div>
-
             <div className="product-list">
                 {products.map(product => (
                     <div 
@@ -123,22 +91,12 @@ const ProductList = () => {
                             <div className="loading">Loading product details...</div>
                         ) : (
                             <div className="product-modal-content">
-                                <div className="product-images">
+                                <div className="product-image">
                                     <img 
                                         src={selectedProduct.thumbnail} 
                                         alt={selectedProduct.title} 
                                         className="main-image"
                                     />
-                                    <div className="product-gallery">
-                                        {selectedProduct.images.map((image, index) => (
-                                            <img 
-                                                key={index} 
-                                                src={image} 
-                                                alt={`${selectedProduct.title} ${index + 1}`}
-                                                className="gallery-image"
-                                            />
-                                        ))}
-                                    </div>
                                 </div>
                                 <div className="product-details">
                                     <h2>{selectedProduct.title}</h2>

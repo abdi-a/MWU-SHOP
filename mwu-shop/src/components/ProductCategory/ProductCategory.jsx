@@ -60,7 +60,7 @@ const ProductCategory = () => {
 
     return (
         <div className="product-category">
-            <h2>Buy</h2>
+            <h2>Choose</h2>
             <div className="category-list">
                 {categories.map((category) => (
                     <button key={category} onClick={() => setSelectedCategory(category)}>
@@ -68,24 +68,23 @@ const ProductCategory = () => {
                     </button>
                 ))}
             </div>
-            <h3>Products {selectedCategory}</h3>
+            {selectedCategory && <h3 className="selected-category">Products in {selectedCategory}</h3>}
             <div className="product-list">
-                {selectedCategory && products[selectedCategory]
-                    ? products[selectedCategory].map((product) => (
-                          <div
-                              key={product.id}
-                              className="product-item"
-                              onClick={() => handleProductClick(product)}
-                          >
-                              <img src={product.thumbnail} alt={product.title} />
-                              <h4>{product.title}</h4>
-                              <p>Price: ${product.price}</p>
-                          </div>
-                      ))
-                    : <p>Please select what you want to buy</p>}
+                {selectedCategory && products[selectedCategory] &&
+                    products[selectedCategory].map((product) => (
+                        <div
+                            key={product.id}
+                            className="product-item"
+                            onClick={() => handleProductClick(product)}
+                        >
+                            <img src={product.thumbnail} alt={product.title} />
+                            <h4>{product.title}</h4>
+                            <p>Price: ${product.price}</p>
+                        </div>
+                    ))
+                }
             </div>
 
-         
             {selectedProduct && (
                 <div className="product-modal-overlay" onClick={closeModal}>
                     <div className="product-modal" onClick={handleModalClick}>
@@ -96,22 +95,12 @@ const ProductCategory = () => {
                             <div className="loading">Loading product details...</div>
                         ) : (
                             <div className="product-modal-content">
-                                <div className="product-images">
+                                <div className="product-image">
                                     <img 
                                         src={selectedProduct.thumbnail} 
                                         alt={selectedProduct.title} 
                                         className="main-image"
                                     />
-                                    <div className="product-gallery">
-                                        {selectedProduct.images.map((image, index) => (
-                                            <img 
-                                                key={index} 
-                                                src={image} 
-                                                alt={`${selectedProduct.title} ${index + 1}`}
-                                                className="gallery-image"
-                                            />
-                                        ))}
-                                    </div>
                                 </div>
                                 <div className="product-details">
                                     <h2>{selectedProduct.title}</h2>
